@@ -76,8 +76,6 @@ The following is an outline of the topics presented in this chapter, with links 
 
     -   Implementation of LBSM Using SYSV IPC (shared memory and semaphores) -- `ncbi_lbsm_ipc`[[.h](https://intranet.ncbi.nlm.nih.gov/ieb/ToolBox/CPP_DOC/lxr/source/src/connect/ncbi_lbsm_ipc.h) \| [.c](https://intranet.ncbi.nlm.nih.gov/ieb/ToolBox/CPP_DOC/lxr/source/src/connect/ncbi_lbsm_ipc.c)]
 
-    -   [Announcement/deannouncement of servers in LBOS](#ch_conn.Lbos_Self_Announce_Deannounce) - **DEPRECATED**
-
 -   [Threaded Server Support](#ch_conn.Threaded_Server_Supp)
 
 For additional related information, see:
@@ -1023,21 +1021,17 @@ Service lookup process now involves looking up through the following sources, in
 
 -   NAMERD (only in-house; this source does not exist in the outside builds);
 
--   LBOS (only in-house; this source does not exist in the outside builds) - **DEPRECATED**;
-
 -   Network dispatcher.
 
 Only one source containing the information about the service is used; the next source is only tried if the previous one was disabled or did not yield any servers (for the service).
 
-The "local environment/registry settings", LINKERD, NAMERD, and LBOS sources are disabled by default.
+The "local environment/registry settings", LINKERD, and NAMERDS sources are disabled by default.
 
 To enable the the "local environment/registry settings" source - set **`CONN_LOCAL_ENABLE`** environment variable to "1" (or "ON, or "YES", or "TRUE") or add **`LOCAL_ENABLE`**=1 to [`CONN`] section in `.ini` file.
 
 To enable the LINKERD source - see the [internal documentation](https://confluence.ncbi.nlm.nih.gov/display/CT/Dispatching+with+NAMERD+and+LINKERD).
 
 To enable the NAMERD source - see the [internal documentation](https://confluence.ncbi.nlm.nih.gov/display/CT/Dispatching+with+NAMERD+and+LINKERD).
-
-Enabling the LBOS source is deprecated.
 
 The LBSM and "Network dispatcher" Sources are enabled by default. To disable them use **`CONN_LBSMD_DISABLE`** and/or **`CONN_DISPD_DISABLE`** set to "1" in the environment or **`LBSMD_DISABLE`**=1 and/or **`DISPD_DISABLE`**=1 under the section "[`CONN`]" in the registry, respectively.
 
@@ -1097,10 +1091,9 @@ You can read about dispatching with LINKERD and NAMERD in [Confluence](https://c
 
 <a name="ch_conn.Lbos_Self_Announce_Deannounce"></a>
 
-### Announcement/deannouncement of servers in LBOS - **DEPRECATED**
+### Announcement/deannouncement of servers in LBOS - **SUPPORT DROPPED**
 
 You can read about how to announce and deannounce your application in LBOS from within the source code in [Confluence](https://confluence.ncbi.nlm.nih.gov/pages/viewpage.action?pageId=51121913) (in-house only).
-
 
 <a name="ch_conn.Threaded_Server_Supp"></a>
 
