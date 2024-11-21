@@ -1025,7 +1025,7 @@ Service lookup process now involves looking up through the following sources, in
 
 Only one source containing the information about the service is used; the next source is only tried if the previous one was disabled or did not yield any servers (for the service).
 
-The "local environment/registry settings", LINKERD, and NAMERDS sources are disabled by default.
+The "local environment/registry settings", LINKERD, and NAMERD sources are disabled by default.
 
 To enable the the "local environment/registry settings" source - set **`CONN_LOCAL_ENABLE`** environment variable to "1" (or "ON, or "YES", or "TRUE") or add **`LOCAL_ENABLE`**=1 to [`CONN`] section in `.ini` file.
 
