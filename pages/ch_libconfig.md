@@ -892,6 +892,7 @@ Table 13.4. PSG data loader configuration parameters
 | Number of retries when fetching bulk data. | **`[PSG_LOADER]`**<br/>**`BULK_RETRY_COUNT`**<br/><br/>**`PSG_LOADER_BULK_RETRY_COUNT`** | unsigned int | 8 |
 | Set the severity level for PSG debug tracing. | **`[PSG_LOADER]`**<br/>**`DEBUG`**<br/><br/>**`PSG_LOADER_DEBUG`** | int:<br/><5 = none<br/>5..8 = different details of loading data | 1 |
 | Expiration timeout of in-memory caches in seconds (must be > 0). | **`[PSG_LOADER]`**<br/>**`ID_EXPIRATION_TIMEOUT`**<br/><br/>**`NCBI_CONFIG__PSG_LOADER__ID_EXPIRATION_TIMEOUT`** | positive unsigned integer | 7200 (2hr) |
+| Expiration timeout of 'no data found' in-memory caches in seconds (must be > 0). | **`[PSG_LOADER]`**<br/>**`NO_ID_EXPIRATION_TIMEOUT`**<br/><br/>**`NCBI_CONFIG__PSG_LOADER__NO_ID_EXPIRATION_TIMEOUT`** | positive unsigned integer | 5 (5 seconds) |
 | Size of in-memory caches. | **`[PSG_LOADER]`**<br/>**`ID_GC_SIZE`**<br/><br/>**`NCBI_CONFIG__PSG_LOADER__ID_GC_SIZE`**    | unsigned int | 10000 |
 | Number of threads in the thread pool used by PSG loader. | **`[PSG_LOADER]`**<br/>**`MAX_POOL_THREADS`**<br/><br/>**`PSG_LOADER_MAX_POOL_THREADS`** | unsigned int | 10 |
 | By default PSG loader prefers loading split data. If this parameter is set to true the loader will request original non-split data instead. | **`[PSG_LOADER]`**<br/>**`NO_SPLIT`**<br/><br/>**`NCBI_CONFIG__PSG_LOADER__NO_SPLIT`** | Boolean  [<sup>a</sup>](#ch_libconfig.TF.37) | false |
