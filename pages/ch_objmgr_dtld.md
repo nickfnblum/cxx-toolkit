@@ -624,6 +624,11 @@ Pubseq Gateway loader is not a standalone data loader but rather a mode of Genba
     [Genbank]
     Loader_PSG=t
 
+Alternatively, PSG loader can be enabled by setting GENBANK_LOADER_METHOD=psg in the environment or in the INI file:
+
+    [Genbank]
+    loader_method=psg
+
 In most cases PSG loader offers much better performance than the default Genbank
 loader due to parallel processing of requests and replies. PSG loader handles
 requests for a single bioseq up to 10 times faster than ID2 reader and up to 5
