@@ -504,9 +504,11 @@ Definition of a library begins with *NCBI_begin_lib* and ends with *NCBI_end_lib
 
 -   **NCBI_enable_pch**(), **NCBI_disable_pch**(), **NCBI_set_pch_header**(name), **NCBI_set_pch_define**(define), **NCBI_disable_pch_for**(list of files) – define the usage of precompiled headers. Most of the time, default behavior is enough, and these calls are not needed. Still some projects prefer to precompile their own headers, or do not want it at all.
 
--   **NCBI_uses_toolkit_libraries**(list of libraries) – adds dependencies on other libraries in the same build tree.
+-   **NCBI_uses_toolkit_libraries**(list of libraries), **NCBI_link_libraries**(list of libraries) – adds dependencies on other libraries, either
+[IMPORTED](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) or defined in the same build tree.
 
--   **NCBI_optional_toolkit_libraries**(COMPONENT list of libraries) – adds dependencies on other libraries in the same build tree depending on the availability of component *COMPONENT*.
+-   **NCBI_optional_toolkit_libraries**(COMPONENT list of libraries), **NCBI_optional_link_libraries**(COMPONENT list of libraries) – adds dependencies on other libraries, either
+[IMPORTED](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) or defined in the same build tree depending on the availability of component *COMPONENT*.
 
 -   **NCBI_uses_external_libraries**(list of libraries) – adds external libraries to the build target. Probably, a better way of doing this is by using *requirements* in *NCBI_requires*, but if a library should be added to one or two projects only, then this might be an easier way.
 
