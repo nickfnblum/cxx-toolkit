@@ -37,6 +37,8 @@ At NCBI, we use NCBIptb – CMake wrapper, written in CMake scripting language. 
 
     -   [Single source tree](#ch_cmconfig._related)
 
+-   [Testing](#ch_cmconfig._Testing)
+
 -   [NCBIptb build system](#ch_cmconfig._NCBIptb)
 
     -   [What is it?](#ch_cmconfig._What)
@@ -56,8 +58,6 @@ At NCBI, we use NCBIptb – CMake wrapper, written in CMake scripting language. 
     -   [Application target tests.](#ch_cmconfig._Test)
     
     -   [Custom target.](#ch_cmconfig._Custom)
-
--   [Testing](#ch_cmconfig._Testing)
 
 -   [Inside NCBIptb](#ch_cmconfig._Inside)
 
@@ -116,9 +116,9 @@ Few options define requirements and compilation features:
     -   *CfgMT* - on Windows adds build configurations which use static multithreaded runtime libraries
     -   *CfgProps* - on Windows, modifies Visual Studio solution to use custom Properties file (which defines build settings)
     -   *Coverage* - when using GCC compiler, sets code coverage flags
-    -   *MaxDebug* - on Unix, adds *_GLIBCXX_DEBUG* compile definition
+    -   *CustomRPath* - on Unix, disables setting RPATH-related CMake definitions, allowing user to define custom ones or use defaults
+    -   *MaxDebug* - on Unix, adds address sanitizer and stack checking flags
     -   *OpenMP* - on Unix, enables OpenMP API
-    -   *SSE* - enables using SSE instruction set
     -   *StaticComponents* - instructs build system to use component's static libraries if they are available,
     -   *Symbols*  - adds debug symbols into release build,
     -   *UNICODE* - on Windows, enables using UNICODE character set.
@@ -280,7 +280,7 @@ In this case, you put your project sources and the Toolkit into separate unrelat
     NCBI_add_subdirectory(${NCBITK_SRC_ROOT} src)
 
 Note that the Toolkit sources are added directly. These two trees will be treated as a compound one. This also means that, by default, all Toolkit build targets will be added as well.
-It is unlikely that you want it, so you need to use [project filters](ch_cmconfig._Configure)
+It is unlikely that you want it, so you need to use [project filters](#ch_cmconfig._Configure)
 
 As with the prebuilt tree setup, NCBIptb can be detached from the Toolkit source.  In the this case, you need to specify the location of the Toolkit sources explicitely - by defining *NCBITK_TREE_ROOT*:
 
@@ -317,6 +317,30 @@ Next, in the root *$HOME/project/CMakeLists.txt* specify the location of module 
     NCBI_add_subdirectory(toolkit module)
 
 
+<a name="ch_cmconfig._Testing"></a>
+
+## Testing
+
+The build system supports two test frameworks - NCBI and CMake one. To use NCBI test framework on Linux, in the build directory execute the following command:
+
+    make check
+
+Test outputs can be found in *CMake-GCC730-ReleaseDLL/check* directory. Please note that the NCBI test framework does not support [Unrelated source trees](#ch_cmconfig._unrelated) and the [Toolkit Conan package](#ch_cmconfig._Conan_prebuilt).
+
+To use CMake testing framework:
+
+    On Linux: make test
+    In Visual Studio or XCode: "build" RUN_TESTS target
+
+Refer to [CMake documentation](https://cmake.org/cmake/help/v3.14/manual/ctest.1.html) for details.
+In case of CMake testing framework, test outputs can be found in *CMake-GCC730-ReleaseDLL/testing* directory.
+
+When using the Toolkit as [Conan package](#ch_cmconfig._Conan_prebuilt), availability of CTest framework should be explicitely requested by defining *NCBI_PTBCFG_ADDTEST* CMake variable before finding the Toolkit:
+
+    set(NCBI_PTBCFG_ADDTEST TRUE)
+    find_package(ncbi-cxx-toolkit-core REQUIRED)
+
+It also requires using [NCBIptb](#ch_cmconfig._NCBIptb) in your project source tree.
 
 <a name="ch_cmconfig._NCBIptb"></a>
 
@@ -480,9 +504,11 @@ Definition of a library begins with *NCBI_begin_lib* and ends with *NCBI_end_lib
 
 -   **NCBI_enable_pch**(), **NCBI_disable_pch**(), **NCBI_set_pch_header**(name), **NCBI_set_pch_define**(define), **NCBI_disable_pch_for**(list of files) – define the usage of precompiled headers. Most of the time, default behavior is enough, and these calls are not needed. Still some projects prefer to precompile their own headers, or do not want it at all.
 
--   **NCBI_uses_toolkit_libraries**(list of libraries) – adds dependencies on other libraries in the same build tree.
+-   **NCBI_uses_toolkit_libraries**(list of libraries), **NCBI_link_libraries**(list of libraries) – adds dependencies on other libraries, either
+[IMPORTED](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) or defined in the same build tree.
 
--   **NCBI_optional_toolkit_libraries**(COMPONENT list of libraries) – adds dependencies on other libraries in the same build tree depending on the availability of component *COMPONENT*.
+-   **NCBI_optional_toolkit_libraries**(COMPONENT list of libraries), **NCBI_optional_link_libraries**(COMPONENT list of libraries) – adds dependencies on other libraries, either
+[IMPORTED](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) or defined in the same build tree depending on the availability of component *COMPONENT*.
 
 -   **NCBI_uses_external_libraries**(list of libraries) – adds external libraries to the build target. Probably, a better way of doing this is by using *requirements* in *NCBI_requires*, but if a library should be added to one or two projects only, then this might be an easier way.
 
@@ -544,22 +570,6 @@ That is, the definition looks as follows:
     NCBI_end_custom_target(result)
 
 This approach allows to define custom target only when all the requirements are met and collect target dependencies automatically.
-
-<a name="ch_cmconfig._Testing"></a>
-
-## Testing
-
-The build system supports two test frameworks - NCBI and CMake one. To use NCBI test framework on Linux, in the root directory execute the following command:
-
-    make check; ./check.sh run
-
-To use CMake testing framework:
-
-    On Linux: make test
-    In Visual Studio or XCode: "build" RUN_TESTS target
-
-Refer to [CMake documentation](https://cmake.org/cmake/help/v3.14/manual/ctest.1.html) for details.
-In case of CMake testing framework, test outputs can be found in *CMake-GCC730-ReleaseDLL/testing* directory.
 
 <a name="ch_cmconfig._Inside"></a>
 
